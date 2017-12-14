@@ -1,0 +1,192 @@
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12">
+            <p *ngFor="let m of message">
+                <ngb-alert [type]="m.type"  [dismissible]="m.dismissible">
+                    <strong>{{m.info}}</strong> {{m.body}}
+                </ngb-alert>
+            </p>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <form name="FormEvento1" #FormEvento1="ngForm">
+                <div class="row">
+                    <div class="col-md-6" style="margin-top: .3em;">
+                        <div class="form-group">
+                            <label for="">Inicio Del Evento <span class="validate-error">*</span></label>
+                            <div class="input-group">
+                                <input class="form-control" placeholder="yyyy-mm-dd" name="fecha" [(ngModel)]="evento.fecha" ngbDatepicker #d="ngbDatepicker"
+                                    #fecha="ngModel" required>
+                                <button class="input-group-addon" (click)="d.toggle()" type="button">
+                                    <span class="fas fa-calendar-times"></span>
+                                </button>
+                            </div>
+                            <span *ngIf="!fecha.valid && fecha.touched" class="validate-error">Campo fecha requerido</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <ngb-timepicker name="hora" [(ngModel)]="evento.hora" [meridian]="meridian" #hora="ngModel" required></ngb-timepicker>
+                        <span *ngIf="!hora.valid && hora.touched" class="validate-error">Campo hora requerido</span>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label for="tipoElemento">Tipo Elemento <span class="validate-error">*</span></label>
+                    <select name="tipoElemento" id="tipoElemento" [(ngModel)]="evento.tipoElemento" class="form-control form-control-sm" #tipoElement="ngModel"
+                        required>
+                        <option *ngFor="let tp of _tiposPlataformas" [value]="tp.idTipoElemento">{{tp.tipoElemento}}</option>
+                    </select>
+                    <span *ngIf="!tipoElement.valid && tipoElement.touched" class="validate-error">Campo tipo elemento requerido</span>
+                </div>
+                <div class="form-group" *ngIf="evento.tipoElemento === '6'">
+                    <label for="agrupamiento">Agrupamiento <span class="validate-error">*</span></label>
+                    <select name="agrupamiento" id="agrupamiento" [(ngModel)]="evento.agrupamiento" (ngModelChange)="obtener_enlaces()" class="form-control form-control-sm"
+                        #agrupamiento="ngModel" required>
+                        <option *ngFor="let a of _agrupamiento" [value]="a.idAgrup">{{a.agrupamiento}}</option>
+                    </select>
+                    <span *ngIf="!agrupamiento.valid && agrupamiento.touched" class="validate-error">Campo tipo elemento requerido</span>
+                </div>
+                <div class="form-group" *ngIf="(evento.tipoElemento === undefined || evento.tipoElemento !== undefined) && (evento.agrupamiento === undefined || evento.agrupamiento === '1')">
+                    <label for="sitio">Sitio <span class="validate-error">*</span></label>
+                    <select name="sitio" id="sitio" [(ngModel)]="evento.sitio" (ngModelChange)="obtener_enlaces()" class="form-control form-control-sm"
+                        #sitio="ngModel" required>
+                        <option *ngFor="let s of _sitios" [value]="s.idSitio">{{s.sitio}}</option>
+                    </select>
+                    <span *ngIf="!sitio.valid && sitio.touched" class="validate-error">Campo tipo elemento requerido</span>
+                </div>
+                <div class="form-group">
+                    <label for="elemento">Seleccione el elemento sobre el cúal se detectó el evento <span class="validate-error">*</span></label>
+                    <div *ngIf="tipoElemento === undefined">
+                        <select name="elemento" id="elemento" [(ngModel)]="evento.elemento" class="form-control form-control-sm" #elemento="ngModel"
+                            required>
+                            <!-- sin options -->
+                        </select>
+                        <span *ngIf="!elemento.valid && elemento.touched" class="validate-error">Campo elemento requerido</span>
+                    </div>
+                    <div [ngSwitch]="tipoElemento">
+                        <div *ngSwitchCase="1">
+                            <select name="elemento" id="elemento" [(ngModel)]="evento.elemento" class="form-control form-control-sm" #elemento="ngModel"
+                                required>
+                                <option *ngFor="let e of _enlaces" [value]="e.id">{{e.tipoEnlace}} ({{e.capacidad}}.{{e.tipoCapacidad}}) {{e.sitio}} - {{e.destino}}</option>
+                            </select>
+                            <span *ngIf="!elemento.valid && elemento.touched" class="validate-error">Campo elemento requerido</span>
+                        </div>
+                        <div *ngSwitchCase="2">
+                            <select name="elemento" id="elemento" [(ngModel)]="evento.elemento" class="form-control form-control-sm" #elemento="ngModel"
+                                required>
+                                <option *ngFor="let e of _enlaces" [value]="e.idPlataformaSitio">{{e.plataforma}} - {{e.sitio}}</option>
+                            </select>
+                            <span *ngIf="!elemento.valid && elemento.touched" class="validate-error">Campo elemento requerido</span>
+                        </div>
+                        <div *ngSwitchCase="3">
+                            <select name="elemento" id="elemento" [(ngModel)]="evento.elemento" class="form-control form-control-sm" #elemento="ngModel"
+                                required>
+                                <option *ngFor="let e of _enlaces" [value]="e.idEquipo">{{e.tipoEquipo}} [{{e.nombreEquipo}}]</option>
+                            </select>
+                            <span *ngIf="!elemento.valid && elemento.touched" class="validate-error">Campo elemento requerido</span>
+                        </div>
+                        <div *ngSwitchCase="4">
+                            <select name="elemento" id="elemento" [(ngModel)]="evento.elemento" class="form-control form-control-sm" #elemento="ngModel"
+                                required>
+                                <option *ngFor="let e of _enlaces" [value]="e.idCliente">{{e.nombre}}</option>
+                            </select>
+                            <span *ngIf="!elemento.valid && elemento.touched" class="validate-error">Campo elemento requerido</span>
+                        </div>
+                        <div *ngSwitchCase="5">
+                            <select name="elemento" id="elemento" [(ngModel)]="evento.elemento" class="form-control form-control-sm" #elemento="ngModel"
+                                required>
+                                <option *ngFor="let e of _enlaces" [value]="e.idCliente">{{e.nombre}} {{e.sitio}} ({{e.responsable}})</option>
+                            </select>
+                            <span *ngIf="!elemento.valid && elemento.touched" class="validate-error">Campo elemento requerido</span>
+                        </div>
+                        <div *ngSwitchCase="6">
+                            <div *ngIf="evento.agrupamiento === '1'">
+                                <select name="elemento" id="elemento" [(ngModel)]="evento.elemento" class="form-control form-control-sm" #elemento="ngModel"
+                                    required>
+                                    <option *ngFor="let e of _enlaces" [value]="e.idElemento">{{e.servicio}} - {{e.sitio}}</option>
+                                </select>
+                                <span *ngIf="!elemento.valid && elemento.touched" class="validate-error">Campo elemento requerido</span>
+                            </div>
+                            <div *ngIf="evento.agrupamiento === '2' || evento.agrupamiento === '3'">
+                                <select name="elemento" id="elemento" [(ngModel)]="evento.elemento" class="form-control form-control-sm" #elemento="ngModel"
+                                    required>
+                                    <option *ngFor="let e of _enlaces" [value]="e.idElemento">{{e.nombres}}</option>
+                                </select>
+                                <span *ngIf="!elemento.valid && elemento.touched" class="validate-error">Campo elemento requerido</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" name="corte" [(ngModel)]="evento.corte" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Corte Total De Servicio <span class="validate-error">*</span></span>
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" name="afectacion" [(ngModel)]="evento.afectacion" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Afectación %</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 1em;">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="reportado">Reportado Por <span class="validate-error">*</span></label>
+                            <select name="reportado" id="reportado" [(ngModel)]="evento.reportado" class="form-control form-control-sm" #reportado="ngModel"
+                                required>
+                                <option value="1">Jhon Doe</option>
+                            </select>
+                            <span *ngIf="!reportado.valid && reportado.touched" class="validate-error">Campo reportado por, es requerido</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="asignar">Asignar a <span class="validate-error">*</span></label>
+                            <select name="asignar" id="asignar" [(ngModel)]="evento.asignar" class="form-control form-control-sm" #asignar="ngModel"
+                                required>
+                                <option *ngFor="let p of _personas" [value]="p.idPersona">{{p.nombres}} {{p.apellidos}}</option>
+                            </select>
+                            <span *ngIf="!asignar.valid && asignar.touched" class="validate-error">Campo asignar a, es requerido</span>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <button style="float: right !important" class="btn btn-blue" (click)="habilitar()" [disabled]="!FormEvento1.form.valid">Diagnostico</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col">
+            <form name="FormEvento2" #FormEvento2="ngForm">
+                <div class="form-group">
+                    <label for="diagnostico">Diagnostico <span class="validate-error">*</span></label>
+                    <select name="diagnostico" id="diagnostico" [(ngModel)]="evento.diagnostico" class="form-control form-control-sm">
+                        <option *ngFor="let d of _diagnosticos" [value]="d.IdDiagnostico">{{d.diagnostico}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="observacion">Observación <span class="validate-error">*</span></label>
+                    <textarea name="observacion" id="observacion" [(ngModel)]="evento.observacion" rows="9" class="form-control form-control-sm"></textarea>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <button style="float: right !important" (click)="nuevo_evento()" [disabled]="habilita" class="btn btn-blue">Registrar</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,40 @@
+/* You can add global styles to this file, and also import other style files */
+body{
+    background-color: #FAFAFA;
+}
+.bg-blue{
+    background-color: #1976D2;
+}
+.btn-blue{
+    background-color: #1976D2;
+    color: #ffffff !important;
+    cursor: pointer;
+}
+
+.link-active{ 
+    color: #D40D12;
+}
+
+
+.padding{
+
+    padding: 10px;
+}
+
+.link{
+    color: #404040;
+    text-decoration: none;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+    background-color: #1976D2;
+    color: #ffffff !important;
+}
+
+.validate-error{
+    color: #a94442;
+}
+
+.nav-item{
+    float: right;
+}

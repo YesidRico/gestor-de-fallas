@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="row padding">
+    <div class="col-md-12">
+      <div class="card" style="background-color: #FAFAFA">
+        <div class="card-block">
+          <ul class="nav justify-content-center">
+            <li class="nav-item">
+              <a class="nav-link"[routerLink]="['gestion-integral']" routerLinkActive="link-active">GESTIÓN INTEGRAL</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['nuevo-evento']" routerLinkActive="link-active">NUEVO EVENTO</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['adicionar-diagnostico']" routerLinkActive="link-active">ADICIONAR DIAGNÓSTICO</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['notificar-evento']" routerLinkActive="link-active">NOTIFICAR EVENTO</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>
+
+<div class="container-fluid">
+    <router-outlet></router-outlet>
+</div>
