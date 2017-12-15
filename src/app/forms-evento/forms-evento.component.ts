@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
 
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
@@ -7,6 +8,7 @@ import { EventoService } from '../services/evento.service';
 import { TipoPlataforma } from '../models/tipoplataforma';
 import { Agrupamiento } from '../models/agrupamiento';
 import { Sitio } from '../models/sitio';
+
 
 @Component({
   selector: 'app-forms-evento',
@@ -38,7 +40,10 @@ export class FormsEventoComponent implements OnInit {
   _personas: Array<any> = [];
 
 
-  constructor(private _eventoService: EventoService) { }
+  constructor(
+    private _eventoService: EventoService,
+    private _router:Router
+  ) { }
 
 
   ngOnInit() {
@@ -157,6 +162,10 @@ export class FormsEventoComponent implements OnInit {
 
   habilitar() {
     this.habilita = false;
+  }
+
+  reload(){
+   location.reload(true);
   }
 
 

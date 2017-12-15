@@ -1,21 +1,27 @@
 <div class="col-md-12">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-11">
             <p *ngFor="let m of message">
-                <ngb-alert [type]="m.type"  [dismissible]="m.dismissible">
+                <ngb-alert [type]="m.type" [dismissible]="m.dismissible">
                     <strong>{{m.info}}</strong> {{m.body}}
                 </ngb-alert>
             </p>
         </div>
+        <div class="col-md-1">
+            <button class="btn btn-primary" (click)="reload()">reload</button>
+        </div>
     </div>
     <hr>
-    <div class="row">
-        <div class="col">
-            <form name="FormEvento1" #FormEvento1="ngForm">
+    <form name="FormEvento1" #FormEvento1="ngForm">
+        <div class="row">
+            <div class="col-md-6">
+
                 <div class="row">
                     <div class="col-md-6" style="margin-top: .3em;">
                         <div class="form-group">
-                            <label for="">Inicio Del Evento <span class="validate-error">*</span></label>
+                            <label for="">Inicio Del Evento
+                                <span class="validate-error">*</span>
+                            </label>
                             <div class="input-group">
                                 <input class="form-control" placeholder="yyyy-mm-dd" name="fecha" [(ngModel)]="evento.fecha" ngbDatepicker #d="ngbDatepicker"
                                     #fecha="ngModel" required>
@@ -33,7 +39,9 @@
                 </div>
                 <hr>
                 <div class="form-group">
-                    <label for="tipoElemento">Tipo Elemento <span class="validate-error">*</span></label>
+                    <label for="tipoElemento">Tipo Elemento
+                        <span class="validate-error">*</span>
+                    </label>
                     <select name="tipoElemento" id="tipoElemento" [(ngModel)]="evento.tipoElemento" class="form-control form-control-sm" #tipoElement="ngModel"
                         required>
                         <option *ngFor="let tp of _tiposPlataformas" [value]="tp.idTipoElemento">{{tp.tipoElemento}}</option>
@@ -41,7 +49,9 @@
                     <span *ngIf="!tipoElement.valid && tipoElement.touched" class="validate-error">Campo tipo elemento requerido</span>
                 </div>
                 <div class="form-group" *ngIf="evento.tipoElemento === '6'">
-                    <label for="agrupamiento">Agrupamiento <span class="validate-error">*</span></label>
+                    <label for="agrupamiento">Agrupamiento
+                        <span class="validate-error">*</span>
+                    </label>
                     <select name="agrupamiento" id="agrupamiento" [(ngModel)]="evento.agrupamiento" (ngModelChange)="obtener_enlaces()" class="form-control form-control-sm"
                         #agrupamiento="ngModel" required>
                         <option *ngFor="let a of _agrupamiento" [value]="a.idAgrup">{{a.agrupamiento}}</option>
@@ -49,7 +59,9 @@
                     <span *ngIf="!agrupamiento.valid && agrupamiento.touched" class="validate-error">Campo tipo elemento requerido</span>
                 </div>
                 <div class="form-group" *ngIf="(evento.tipoElemento === undefined || evento.tipoElemento !== undefined) && (evento.agrupamiento === undefined || evento.agrupamiento === '1')">
-                    <label for="sitio">Sitio <span class="validate-error">*</span></label>
+                    <label for="sitio">Sitio
+                        <span class="validate-error">*</span>
+                    </label>
                     <select name="sitio" id="sitio" [(ngModel)]="evento.sitio" (ngModelChange)="obtener_enlaces()" class="form-control form-control-sm"
                         #sitio="ngModel" required>
                         <option *ngFor="let s of _sitios" [value]="s.idSitio">{{s.sitio}}</option>
@@ -57,7 +69,9 @@
                     <span *ngIf="!sitio.valid && sitio.touched" class="validate-error">Campo tipo elemento requerido</span>
                 </div>
                 <div class="form-group">
-                    <label for="elemento">Seleccione el elemento sobre el cúal se detectó el evento <span class="validate-error">*</span></label>
+                    <label for="elemento">Seleccione el elemento sobre el cúal se detectó el evento
+                        <span class="validate-error">*</span>
+                    </label>
                     <div *ngIf="tipoElemento === undefined">
                         <select name="elemento" id="elemento" [(ngModel)]="evento.elemento" class="form-control form-control-sm" #elemento="ngModel"
                             required>
@@ -124,7 +138,9 @@
                         <label class="custom-control custom-checkbox">
                             <input type="checkbox" name="corte" [(ngModel)]="evento.corte" class="custom-control-input">
                             <span class="custom-control-indicator"></span>
-                            <span class="custom-control-description">Corte Total De Servicio <span class="validate-error">*</span></span>
+                            <span class="custom-control-description">Corte Total De Servicio
+                                <span class="validate-error">*</span>
+                            </span>
                         </label>
                     </div>
                     <div class="col-md-4">
@@ -138,7 +154,9 @@
                 <div class="row" style="padding-top: 1em;">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="reportado">Reportado Por <span class="validate-error">*</span></label>
+                            <label for="reportado">Reportado Por
+                                <span class="validate-error">*</span>
+                            </label>
                             <select name="reportado" id="reportado" [(ngModel)]="evento.reportado" class="form-control form-control-sm" #reportado="ngModel"
                                 required>
                                 <option value="1">Jhon Doe</option>
@@ -148,7 +166,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="asignar">Asignar a <span class="validate-error">*</span></label>
+                            <label for="asignar">Asignar a
+                                <span class="validate-error">*</span>
+                            </label>
                             <select name="asignar" id="asignar" [(ngModel)]="evento.asignar" class="form-control form-control-sm" #asignar="ngModel"
                                 required>
                                 <option *ngFor="let p of _personas" [value]="p.idPersona">{{p.nombres}} {{p.apellidos}}</option>
@@ -160,33 +180,34 @@
                 <hr>
                 <div class="row">
                     <div class="col-12">
-                        <button style="float: right !important" class="btn btn-blue" (click)="habilitar()" [disabled]="!FormEvento1.form.valid">Diagnostico</button>
+                        <button style="float: right !important" class="btn btn-blue" (click)="habilitar()">Diagnostico</button>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
 
-        <div class="col">
-            <form name="FormEvento2" #FormEvento2="ngForm">
+            <div class="col-md-6">
+
                 <div class="form-group">
-                    <label for="diagnostico">Diagnostico <span class="validate-error">*</span></label>
+                    <label for="diagnostico">Diagnostico
+                        <span class="validate-error">*</span>
+                    </label>
                     <select name="diagnostico" id="diagnostico" [(ngModel)]="evento.diagnostico" class="form-control form-control-sm">
                         <option *ngFor="let d of _diagnosticos" [value]="d.IdDiagnostico">{{d.diagnostico}}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="observacion">Observación <span class="validate-error">*</span></label>
+                    <label for="observacion">Observación
+                        <span class="validate-error">*</span>
+                    </label>
                     <textarea name="observacion" id="observacion" [(ngModel)]="evento.observacion" rows="9" class="form-control form-control-sm"></textarea>
                 </div>
                 <hr>
                 <div class="row">
                     <div class="col-12">
-                        <button style="float: right !important" (click)="nuevo_evento()" [disabled]="habilita" class="btn btn-blue">Registrar</button>
+                        <button style="float: right !important" (click)="nuevo_evento()" [disabled]="!FormEvento1.form.valid" class="btn btn-blue">Registrar</button>
                     </div>
                 </div>
-            </form>
-
+            </div>
         </div>
-
-    </div>
+    </form>
 </div>
