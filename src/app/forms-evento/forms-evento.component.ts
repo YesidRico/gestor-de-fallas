@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 import { EventoService } from '../services/evento.service';
 
@@ -21,7 +22,7 @@ export class FormsEventoComponent implements OnInit {
   meridian = true;
   habilita: boolean = true;
   tipoElemento: number;
-  evento: any = { id: Date.now() }
+  evento: any = {}
 
   message = [{
     id: 1,
@@ -31,6 +32,10 @@ export class FormsEventoComponent implements OnInit {
     info: '!Información¡',
     dismissible: true,
   }]
+
+  _elementos_afectados: Array<any> = [];
+  _plataformas_afectadas: Array<any> = [];
+  elemento: any = {};
 
   _tiposPlataformas: Array<TipoPlataforma> = [];
   _agrupamiento: Array<Agrupamiento> = [];
@@ -42,7 +47,8 @@ export class FormsEventoComponent implements OnInit {
 
   constructor(
     private _eventoService: EventoService,
-    private _router:Router
+    private _router: Router,
+    private _modalService: NgbModal
   ) { }
 
 
@@ -52,6 +58,7 @@ export class FormsEventoComponent implements OnInit {
     this.obtener_sitios();
     this.obtener_diagnosticos();
     this.obtener_directorio_personas();
+    this.plataformas_afectadas();
   }
 
 
@@ -147,7 +154,7 @@ export class FormsEventoComponent implements OnInit {
   nuevo_evento() {
     this._eventoService.nuevo_evento(JSON.stringify(this.evento))
       .subscribe(res => {
-        
+
         this.message[0].info = '!Éxito¡';
         this.message[0].type = 'success';
         this.message[0].body = `El evento se registro con éxito. El número del evento es: ${res}`;
@@ -160,17 +167,31 @@ export class FormsEventoComponent implements OnInit {
       })
   }
 
-  habilitar() {
-    this.habilita = false;
+
+  elementos_afectados() {
+    this._eventoService.elementos_afectados(this.evento.tipoElemento,this.evento.sitio).subscribe(res => {
+      this._elementos_afectados = res;
+    },
+      err => {
+        console.log(`Error al realizar la petición: ${err.status}`);
+      })
   }
 
-  reload(){
-   location.reload(true);
+  plataformas_afectadas() {
+    this._eventoService.plataformas_afectadas().subscribe(res => {
+      this._plataformas_afectadas = res;
+    },
+      err => {
+        console.log(`Error al realizar la petición: ${err.status}`);
+      })
+  }
+
+  openModal(content) {
+    this._modalService.open(content, { windowClass: 'dark-modal' });
   }
 
 
   get diagnostic() {
-
     return JSON.stringify(this.evento);
   }
 

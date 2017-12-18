@@ -4,6 +4,7 @@ import { HomeComponent } from '../home/home.component';
 import { FormsEventoComponent } from '../forms-evento/forms-evento.component';
 import { OptionsEventoComponent } from '../options-evento/options-evento.component';
 
+
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   {

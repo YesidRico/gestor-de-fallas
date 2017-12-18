@@ -15,6 +15,7 @@ import { FormsEventoComponent } from './forms-evento/forms-evento.component';
 import { OptionsEventoComponent } from './options-evento/options-evento.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +23,6 @@ import { OptionsEventoComponent } from './options-evento/options-evento.componen
     HomeComponent,
     FormsEventoComponent,
     OptionsEventoComponent
-    
   ],
   imports: [
     BrowserModule,
